@@ -1,19 +1,20 @@
-import bcrypt from "bcrypt";
+import crypto from "crypto";
 import { Doctor } from "./auth.types";
+import { hashPassword, comparePassword } from "../../utils/password";
 import { signToken } from "../../utils/jwt";
 
-const doctors: Doctor[] = []; // 🔥 TEMP DB
+const doctors: Doctor[] = []; // 🧠 in-memory DB
 
 export const signupService = async (
   email: string,
   password: string
 ) => {
-  const existing = doctors.find(d => d.email === email);
-  if (existing) {
+  const exists = doctors.find(d => d.email === email);
+  if (exists) {
     throw new Error("Doctor already exists");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await hashPassword(password);
 
   const doctor: Doctor = {
     id: crypto.randomUUID(),
@@ -41,7 +42,7 @@ export const loginService = async (
     throw new Error("Invalid credentials");
   }
 
-  const isMatch = await bcrypt.compare(password, doctor.password);
+  const isMatch = await comparePassword(password, doctor.password);
   if (!isMatch) {
     throw new Error("Invalid credentials");
   }
