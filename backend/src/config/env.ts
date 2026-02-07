@@ -4,8 +4,8 @@ dotenv.config();
 
 export const env = {
   PORT: process.env.PORT ? Number(process.env.PORT) : 3000,
-  JWT_SECRET: process.env.JWT_SECRET,
-  MONGO_URI: process.env.MONGO_URI,
+  JWT_SECRET: process.env.JWT_SECRET as string,
+  MONGO_URI: process.env.MONGO_URI as string,
 };
 
 // 🔐 JWT is REQUIRED (auth ke bina server ka koi matlab nahi)

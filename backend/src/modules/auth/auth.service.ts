@@ -1,5 +1,7 @@
 import crypto from "crypto";
 import { Doctor } from "./auth.types";
+import DoctorModel from "../doctor/../../models/doctor.model";
+
 import { hashPassword, comparePassword } from "../../utils/password";
 import { signToken } from "../../utils/jwt";
 
@@ -23,15 +25,33 @@ export const signupService = async (
     role: "doctor",
   };
 
-  doctors.push(doctor);
+//   doctors.push(doctor);
 
-  const token = signToken({
-    id: doctor.id,
-    role: doctor.role,
-  });
+//   const token = signToken({
+//     id: doctor.id,
+//     role: doctor.role,
+//   });
 
-  return { token };
-};
+//   return { token };
+// };/
+
+doctors.push(doctor);
+
+// 🔥 CREATE DOCTOR IN MONGODB
+await DoctorModel.create({
+  userId: doctor.id,       // UUID from auth
+  email: doctor.email,
+  password: doctor.password,
+  role: "doctor",
+});
+
+const token = signToken({
+  id: doctor.id,
+  role: doctor.role,
+});
+
+return { token };
+
 
 export const loginService = async (
   email: string,
@@ -53,4 +73,4 @@ export const loginService = async (
   });
 
   return { token };
-};
+}
