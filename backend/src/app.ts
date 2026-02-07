@@ -7,6 +7,8 @@ import doctorRoutes from "./modules/doctor/doctor.routes";
 
 import { authMiddleware } from "./middlewares/auth.middleware";
 
+import patientRoutes from "./modules/patient/patient.routes";
+import caseRoutes from "./modules/case/case.routes";
 
 
 const app = express();
@@ -17,6 +19,9 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use("/auth", authRoutes);
 app.use("/doctor", doctorRoutes);
+app.use("/patients", patientRoutes);
+app.use("/cases", caseRoutes);
+
 
 // health check
 app.get("/health", (_req, res) => {
