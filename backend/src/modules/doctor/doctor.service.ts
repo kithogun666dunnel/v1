@@ -18,8 +18,8 @@ export const updateDoctorProfile = async (
   doctorId: string,
   data: DoctorProfileUpdateDTO
 ) => {
-  const doctor = await Doctor.findByIdAndUpdate(
-    doctorId,
+  const doctor = await Doctor.findOneAndUpdate(
+    { userId: doctorId },
     { $set: data },
     { new: true }
   ).select("-password");
@@ -35,13 +35,9 @@ export const updateDoctorAvailability = async (
   doctorId: string,
   data: DoctorAvailabilityDTO
 ) => {
-  const doctor = await Doctor.findByIdAndUpdate(
-    doctorId,
-    {
-      $set: {
-        availability: data,
-      },
-    },
+  const doctor = await Doctor.findOneAndUpdate(
+    { userId: doctorId },
+    { $set: { availability: data } },
     { new: true }
   ).select("-password");
 
